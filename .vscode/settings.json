@@ -3,5 +3,8 @@
         "src/python",
         "ext",
         "tests"
-    ]
+    ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportUndefinedVariable": "none"
+    }
 }
