@@ -79,13 +79,13 @@ system.cpu.interrupts[0].int_requestor = system.membus.cpu_side_ports
 system.cpu.interrupts[0].int_responder = system.membus.mem_side_ports
 
 # Create a DDR3 memory controller and connect it to the membus
-# system.mem_ctrl = MemCtrl()
-# system.mem_ctrl.dram = DDR3_1600_8x8()
-# system.mem_ctrl.dram.range = system.mem_ranges[0]
-# system.mem_ctrl.port = system.membus.mem_side_ports
-system.mem_ctrl = DRAMsim3()
-system.mem_ctrl.range = system.mem_ranges[0]
+system.mem_ctrl = MemCtrl()
+system.mem_ctrl.dram = DDR3_1600_8x8()
+system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
+# system.mem_ctrl = DRAMsim3()
+# system.mem_ctrl.range = system.mem_ranges[0]
+# system.mem_ctrl.port = system.membus.mem_side_ports
 
 # Connect the system up to the membus
 system.system_port = system.membus.cpu_side_ports
@@ -96,10 +96,10 @@ system.system_port = system.membus.cpu_side_ports
 thispath = os.path.dirname(os.path.realpath(__file__))
 binary = os.path.join(
     thispath,
-    # "../../../",
-    # "tests/test-progs/hello/bin/x86/linux/hello",
     "../../",
-    "tests/test-progs/stream/bin/x86/linux/stream",
+    "tests/test-progs/hello/bin/x86/linux/hello",
+    # "../../",
+    # "tests/test-progs/stream/bin/x86/linux/stream",
 )
 
 system.workload = SEWorkload.init_compatible(binary)
