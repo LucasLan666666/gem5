@@ -134,14 +134,15 @@ MemConfig.config_mem(args, system)
 
 # there is no point slowing things down by saving any data
 for ctrl in system.mem_ctrls:
-    ctrl.null = True
+    ctrl.dram.null = True
+
 
     # the following assumes that we are using the native DRAM
     # controller, check to be sure
     if isinstance(ctrl, m5.objects.MemCtrl):
         # make the DRAM refresh interval sufficiently infinite to avoid
         # latency spikes
-        ctrl.tREFI = "100s"
+        ctrl.dram.tREFI = "100s"
 
 # use the same concept as the utilisation sweep, and print the config
 # so that we can later read it in
@@ -193,7 +194,7 @@ def create_trace(filename, max_addr, burst_size, itt):
 
     # write the magic number in 4-byte Little Endian, similar to what
     # is done in src/proto/protoio.cc
-    proto_out.write("gem5")
+    proto_out.write(b"gem5")
 
     # add the packet header
     header = packet_pb2.PacketHeader()

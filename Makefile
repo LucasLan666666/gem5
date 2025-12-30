@@ -1,10 +1,10 @@
 GEM5_BIN    ?= build/X86/gem5.opt
 SCRIPT      ?= configs/mytest/simple.py
 OUTDIR      ?= m5out
-DEBUG_FLAGS ?= DRAMsim3
-DEBUG_FILE  ?= debug.txt
-# STDOUT_FILE ?= simout.txt
-# STDERR_FILE ?= simerr.txt
+DEBUG_FLAGS ?= DRAM
+DEBUG_FILE  ?= debug.log
+STDOUT_FILE ?= simout.txt
+STDERR_FILE ?= simerr.txt
 ARGS        ?=
 
 

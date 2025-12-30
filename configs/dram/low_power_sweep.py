@@ -155,8 +155,7 @@ system.mem_ctrls[0].dram.page_policy = args.page_policy
 period = 250000000
 
 # We specify the states in a config file input to the traffic generator.
-cfg_file_name = "lowp_sweep.cfg"
-cfg_file_path = os.path.dirname(__file__) + "/" + cfg_file_name
+cfg_file_path = os.path.join(m5.options.outdir, "lowp_sweep.cfg")
 cfg_file = open(cfg_file_path, "w")
 
 # Get the number of banks
@@ -303,4 +302,4 @@ print("\titt max multiples input:", itt_max_multiples)
 print("\titt max values", itt_max_values)
 print("\tbank utilization values", bank_util_values)
 print("\tstride values:", stride_values)
-print("Traffic gen config file:", cfg_file_name)
+print("Traffic gen config file:", cfg_file_path)
