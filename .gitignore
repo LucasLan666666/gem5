@@ -9,6 +9,7 @@ cscope.out
 .*.swp
 .*.swo
 m5out*
+packet_pb2.py
 /src/doxygen/html
 /docs/_build
 /ext/dramsim2/DRAMSim2
@@ -16,7 +17,6 @@ m5out*
 /util/m5/*.o
 /util/m5/*.a
 /util/m5/m5
-/util/packet_pb2.py
 /util/tap/*.d
 /util/tap/*.o
 /util/tap/m5tap
