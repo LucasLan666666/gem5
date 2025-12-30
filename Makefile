@@ -1,4 +1,4 @@
-GEM5_BIN    ?= build/ALL/gem5.opt
+GEM5_BIN    ?= build/X86/gem5.opt
 SCRIPT      ?= configs/mytest/simple.py
 OUTDIR      ?= m5out
 DEBUG_FLAGS ?= DRAMsim3
