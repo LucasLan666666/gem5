@@ -210,22 +210,19 @@ def trace():
     for stride_size in range(burst_size, max_stride + 1, burst_size):
         for bank in range(1, nbr_banks + 1):
             num_seq_pkts = int(math.ceil(float(stride_size) / burst_size))
-            yield generator(
-                period,
-                0,
-                max_addr,
-                burst_size,
-                int(itt),
-                int(itt),
-                args.rd_perc,
-                0,
-                num_seq_pkts,
-                page_size,
-                nbr_banks,
-                bank,
-                addr_map,
-                args.mem_ranks,
-            )
+            if (args.mode == "DRAM_ROTATE"):
+                max_seq_count_per_rank = (nbr_of_banks_util * 2
+                                          if (args.rd_perc == 50)
+                                          else nbr_of_banks_util)
+                yield generator(period, 0, max_addr, burst_size, int(itt),
+                                int(itt), args.rd_perc, 0, num_seq_pkts,
+                                page_size, nbr_banks, bank, addr_map,
+                                args.mem_ranks, max_seq_count_per_rank)
+            else:
+                yield generator(period, 0, max_addr, burst_size, int(itt),
+                                int(itt), args.rd_perc, 0, num_seq_pkts,
+                                page_size, nbr_banks, bank, addr_map,
+                                args.mem_ranks)
     yield system.tgen.createExit(0)
 
 
