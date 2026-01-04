@@ -1,5 +1,5 @@
 GEM5_BIN    ?= build/X86/gem5.opt
-SCRIPT      ?= configs/mytest/simple.py
+SCRIPT      ?= configs/mytest/dramtest.py
 OUTDIR      ?= m5out
 DEBUG_FLAGS ?=
 DEBUG_FILE  ?= debug.log
@@ -7,6 +7,7 @@ STDOUT_FILE ?= simout.txt
 STDERR_FILE ?= simerr.txt
 ARGS        ?=
 
+PYTHON      ?= python3
 
 DEBUG_OPTS :=
 ifdef DEBUG_FLAGS
@@ -32,6 +33,10 @@ run: clean
 		$(STD_OPTS) \
 		$(SCRIPT) \
 		$(ARGS)
+
+trace: run
+	gunzip -c $(OUTDIR)/monitor.ptrc.gz > $(OUTDIR)/monitor.ptrc
+	$(PYTHON) util/decode_packet_trace.py $(OUTDIR)/monitor.ptrc $(OUTDIR)/trace.csv
 
 clean:
 	rm -rf $(OUTDIR)

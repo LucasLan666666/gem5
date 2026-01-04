@@ -88,24 +88,31 @@ def main():
     num_packets = 0
     packet = packet_pb2.Packet()
 
+    # CSV header
+    ascii_out.write("pkt_id,cmd,addr_hex,size,flags,tick,pc\n")
+
     # Decode the packet messages until we hit the end of the file
     while protolib.decodeMessage(proto_in, packet):
         num_packets += 1
         # ReadReq is 1 and WriteReq is 4 in src/mem/packet.hh Command enum
         cmd = "r" if packet.cmd == 1 else ("w" if packet.cmd == 4 else "u")
-        if packet.HasField("pkt_id"):
-            ascii_out.write(f"{packet.pkt_id},")
-        if packet.HasField("flags"):
-            ascii_out.write(
-                f"{cmd},{packet.addr},{packet.size},{packet.flags},{packet.tick}"
-            )
-        else:
-            ascii_out.write(f"{cmd},{packet.addr},{packet.size},{packet.tick}")
-        if packet.HasField("pc"):
-            ascii_out.write(f",{packet.pc}\n")
-        else:
-            ascii_out.write("\n")
-
+        fields = []
+        # pkt_id (optional)
+        fields.append(str(packet.pkt_id) if packet.HasField("pkt_id") else "")
+        # cmd
+        fields.append(cmd)
+        # addr in hex
+        fields.append(f"0x{packet.addr:x}")
+        # size
+        fields.append(str(packet.size))
+        # flags (optional)
+        fields.append(str(packet.flags) if packet.HasField("flags") else "")
+        # tick
+        fields.append(str(packet.tick))
+        # pc (optional)
+        fields.append(f"0x{packet.pc:x}" if packet.HasField("pc") else "")
+        # Write the CSV line
+        ascii_out.write(",".join(fields) + "\n")
     print("Parsed packets:", num_packets)
 
     # We're done
