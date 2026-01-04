@@ -127,7 +127,8 @@ def main():
 
     # lazy version to check if an integer is a power of two
     def is_pow2(num):
-        return num != 0 and ((num & (num - 1)) == 0)
+        n = int(num)
+        return n != 0 and ((n & (n - 1)) == 0)
 
     plt.semilogx(ranges, final_rd_lat)
 
@@ -145,7 +146,8 @@ def main():
     plt.xlim((xticks_locations[0], xticks_locations[-1]))
     plt.ylabel("Latency (ns)")
     plt.grid(True)
-    plt.show()
+    # plt.show()
+    plt.savefig(sys.argv[1] + "/dram_lat_mem_rd_plot.pdf", bbox_inches="tight")
 
 
 if __name__ == "__main__":

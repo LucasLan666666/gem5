@@ -166,7 +166,7 @@ def main():
         exit(-1)
 
     fig = plt.figure()
-    ax = fig.gca(projection="3d")
+    ax = fig.add_subplot(projection="3d")
     X = np.arange(burst_size, max_size + 1, burst_size)
     Y = np.arange(1, banks + 1, 1)
     X, Y = np.meshgrid(X, Y)
@@ -203,7 +203,8 @@ def main():
     # Add a colorbar
     fig.colorbar(surf, shrink=0.5, pad=0.1, aspect=10)
 
-    plt.show()
+    # plt.show()
+    plt.savefig(sys.argv[2] + "/dram_sweep_plot.pdf", bbox_inches="tight")
 
 
 if __name__ == "__main__":
