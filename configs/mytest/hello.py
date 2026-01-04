@@ -96,7 +96,6 @@ binary = os.path.join(
     thispath,
     "../../",
     "tests/test-progs/hello/bin/x86/linux/hello",
-    # "tests/test-progs/stream/bin/x86/linux/stream",
 )
 
 system.workload = SEWorkload.init_compatible(binary)
