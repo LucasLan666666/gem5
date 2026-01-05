@@ -1,5 +1,5 @@
 GEM5_BIN    ?= build/X86/gem5.opt
-SCRIPT      ?= configs/mytest/dramtest.py
+SCRIPT      ?= configs/my_scripts/demo.py
 OUTDIR      ?= m5out
 DEBUG_FLAGS ?=
 DEBUG_FILE  ?= debug.txt
@@ -36,7 +36,9 @@ run: clean
 
 trace: run
 	gunzip -c $(OUTDIR)/monitor.ptrc.gz > $(OUTDIR)/monitor.ptrc
-	$(PYTHON) util/decode_packet_trace.py $(OUTDIR)/monitor.ptrc $(OUTDIR)/trace.csv
+	$(PYTHON) util/decode_packet_trace.py \
+	    $(OUTDIR)/monitor.ptrc \
+		$(OUTDIR)/monitor_ptrc.csv
 
 clean:
 	rm -rf $(OUTDIR)
