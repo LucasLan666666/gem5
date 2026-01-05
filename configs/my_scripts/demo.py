@@ -124,7 +124,7 @@ def trace():
 
 
 
-############################### Running the Simulation ##########################
+############################## Running the Simulation #########################
 root = Root(full_system=False, system=system)
 root.system.mem_mode = "timing"
 m5.instantiate()
