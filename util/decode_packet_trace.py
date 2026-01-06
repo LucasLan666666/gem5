@@ -89,7 +89,7 @@ def main():
     packet = packet_pb2.Packet()
 
     # CSV header
-    ascii_out.write("pkt_id,cmd,addr_hex,size,flags,tick,pc\n")
+    ascii_out.write("pkt_id,cmd,addr,size,flags,tick,pc\n")
 
     # Decode the packet messages until we hit the end of the file
     while protolib.decodeMessage(proto_in, packet):
@@ -101,7 +101,7 @@ def main():
         fields.append(str(packet.pkt_id) if packet.HasField("pkt_id") else "")
         # cmd
         fields.append(cmd)
-        # addr in hex
+        # addr
         fields.append(f"0x{packet.addr:x}")
         # size
         fields.append(str(packet.size))

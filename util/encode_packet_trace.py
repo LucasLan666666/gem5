@@ -123,8 +123,8 @@ def main():
         packet.tick = int(tick)
         # ReadReq is 1 and WriteReq is 4 in src/mem/packet.hh Command enum
         packet.cmd = 1 if cmd == "r" else 4
-        packet.addr = int(addr)
-        packet.size = int(size)
+        packet.addr = int(addr, 0)
+        packet.size = int(size, 0)
         protolib.encodeMessage(proto_out, packet)
 
     # We're done

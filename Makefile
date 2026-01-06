@@ -38,7 +38,7 @@ trace: run
 	gunzip -c $(OUTDIR)/monitor.ptrc.gz > $(OUTDIR)/monitor.ptrc
 	$(PYTHON) util/decode_packet_trace.py \
 	    $(OUTDIR)/monitor.ptrc \
-		$(OUTDIR)/monitor_ptrc.csv
+		$(OUTDIR)/monitor_decoded.csv
 
 clean:
 	rm -rf $(OUTDIR)
