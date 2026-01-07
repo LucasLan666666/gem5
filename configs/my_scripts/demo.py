@@ -7,10 +7,7 @@ from m5.util import addToPath
 
 addToPath("../")
 
-from common import (
-    MemConfig,
-    ObjectList,
-)
+from common import ObjectList
 
 ############################ System & Memory Setup ############################
 mem_range = AddrRange("256MiB")
@@ -18,25 +15,44 @@ mem_range = AddrRange("256MiB")
 system = System(
     membus=IOXBar(width=32),
     clk_domain=SrcClockDomain(clock="2.0GHz", voltage_domain=VoltageDomain()),
-    mem_ranges = [mem_range],
-    mmap_using_noreserve = True
+    mem_ranges=[mem_range],
+    mmap_using_noreserve=True,
 )
 
+# 固定使用 HBM2 伪通道 + HBMCtrl，便于研究调度策略。
 opts = argparse.Namespace(
-    mem_type="DDR3_1600_8x8",
     mem_ranks=1,
     addr_mapping="RoRaBaCoCh",
-    mem_channels=1,
-    external_memory_system=0,
-    tlm_memory=0,
-    elastic_trace_en=0,
 )
 
-MemConfig.config_mem(opts, system)
+# 生成两条伪通道并挂在同一个 HBMCtrl 下。
+dram_pc0 = HBM_2000_4H_1x64(addr_mapping=opts.addr_mapping)
+dram_pc1 = HBM_2000_4H_1x64(addr_mapping=opts.addr_mapping)
 
+# 按 bit6 交织到两个伪通道（与 HBMCtrl 行为一致）。
+dram_pc0.range = AddrRange(
+    start=mem_range.start,
+    size=mem_range.size(),
+    masks=[1 << 6],
+    intlvMatch=0,
+)
+dram_pc1.range = AddrRange(
+    start=mem_range.start,
+    size=mem_range.size(),
+    masks=[1 << 6],
+    intlvMatch=1,
+)
 
-system.mem_ctrls[0].dram.null = True
-system.mem_ctrls[0].dram.addr_mapping = opts.addr_mapping
+mem_ctrl = HBMCtrl(
+    dram=dram_pc0,
+    dram_2=dram_pc1,
+    mem_sched_policy="frfcfs",
+    disable_sanity_check=True,
+)
+
+mem_ctrl.clk_domain = system.clk_domain
+mem_ctrl.port = system.membus.mem_side_ports
+system.mem_ctrls = [mem_ctrl]
 
 
 
@@ -59,7 +75,7 @@ system.monitor.mem_side_port = system.membus.cpu_side_ports
 
 
 ################### Calculating Parameters for the Tracegen ###################
-duration = 10000000000
+duration = 100000000
 read_percent = 50
 
 nbr_of_banks = system.mem_ctrls[0].dram.banks_per_rank.value
